@@ -19,7 +19,6 @@ RecipeGEN/
 ├── models/ <!-- Python Machine Learning Models
 ├── pages/ <!-- HTML pages with component imports
 │   └── styles/ <!-- CSS stylesheets
-│
 ```
 This project's general aim is to help users quickly find recipe ideas by submitting an image for review by our trained ML models (CNN--Convolutional Neural Networks, Model #2, Model #3). These models will scan an image of (presumably) ingredients, track which ingredients are in the photo, search through the database for recipes containing those ingredients, and feed them back to the user.
 
