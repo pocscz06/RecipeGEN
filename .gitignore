@@ -1,0 +1,6 @@
+# Firebase
+config/firebase_config/recipegen.json
+
+.venv/
+
+data/
