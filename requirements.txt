@@ -1,0 +1,7 @@
+firebase-admin
+pandas
+google-cloud-firestore
+opencv-python
+numpy
+scikit-learn
+multiprocessing-logging
