@@ -10,7 +10,7 @@ from functools import partial
 from sklearn.model_selection import train_test_split
 import firebase_admin
 from firebase_admin import credentials, firestore, storage
-
+import logging
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
 import torch
@@ -294,5 +294,52 @@ def main():
         import traceback
         traceback.print_exc()
 
-if __name__ == "__main__":
-    main()
+
+
+logger = logging.getLogger(__name__)
+
+def initialize_firestore():
+    try:
+        if not firebase_admin._apps:
+            cred = credentials.Certificate('app/recipegen.json')
+            firebase_admin.initialize_app(cred, {"storageBucket": "recipegen-710d0.firebasestorage.app"})
+        db = firestore.client()
+        logger.info("Firestore initialized successfully")
+        return db
+    except Exception as e:
+        logger.error(f"Error initializing Firestore: {str(e)}")
+        raise
+
+def get_recipes_with_ingredient(ingredient_name):
+    try:
+        db = initialize_firestore()
+        
+        #Query collection and documents
+        collection_ref = db.collection('test')
+        query = collection_ref.where('ingredients', 'array_contains', ingredient_name.lower())
+        
+        docs = query.stream()
+        
+        recipes = []
+        for doc in docs:
+            recipe_data = doc.to_dict()
+            recipe_data['id'] = doc.id
+            
+            #Count ingredient occurances
+            ingredient_count = 0
+            if 'ingredients' in recipe_data:
+                for ingredient in recipe_data['ingredients']:
+                    if ingredient_name.lower() in ingredient.lower():
+                        ingredient_count += 1
+            
+
+            recipe_data['ingredient_count'] = ingredient_count
+            
+            recipes.append(recipe_data)
+        
+        logger.info(f"Found {len(recipes)} recipes with {ingredient_name}")
+        return recipes
+    except Exception as e:
+        logger.error(f"Error querying Firestore: {str(e)}")
+        return []
+
