@@ -80,6 +80,7 @@ function initRecipeDisplay() {
     displayRecipes(recipeData);
   } else {
     console.warn("No recipe data found");
+    
 
     const recipesGrid = document.getElementById("recipes-grid");
     if (recipesGrid) {
