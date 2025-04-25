@@ -1,0 +1,147 @@
+* {
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+    border-color: #e5e7eb;
+  }
+  
+html {
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    tab-size: 4;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+  }
+  
+body {
+    background-color: #f9fafb;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    color: #1f2937;
+    padding: 1.5rem;
+    max-width: 42rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+h1 {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    font-weight: 700;
+    color: #0051ff;
+    margin-bottom: 1.5rem;
+  }
+  
+h2 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+.result-card {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+.image-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+  
+.image-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.25rem;
+    max-height: 400px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  }
+  
+.detection-result {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+.detection-result h2 {
+    margin-top: 0;
+    color: #0051ff;
+  }
+  
+.detection-count {
+    font-size: 1.125rem;
+    color: #4b5563;
+    margin-top: 0.5rem;
+  }
+  
+.class-summary {
+    background-color: #f3f4f6;
+    border-radius: 0.375rem;
+    padding: 1rem;
+    margin-top: 1rem;
+  }
+  
+.class-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+.class-item:last-child {
+    border-bottom: none;
+  }
+  
+.class-name {
+    font-weight: 500;
+  }
+  
+.class-count {
+    color: #6b7280;
+  }
+  
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+  
+.action-button {
+    display: inline-block;
+    background-color: #0051ff;
+    color: white;
+    font-weight: 500;
+    padding: 0.75rem 1rem;
+    border-radius: 0.25rem;
+    text-decoration: none;
+    text-align: center;
+    transition-property: background-color;
+    transition-duration: 200ms;
+  }
+  
+.action-button:hover {
+    background-color: #1d4ed8;
+  }
+  
+.recipe-button {
+    background-color: #10b981;
+  }
+  
+.recipe-button:hover {
+    background-color: #059669;
+  }
+  
+.model-indicator {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: white;
+    margin-left: 0.5rem;
+    background-color: #0026ff;
+  }
