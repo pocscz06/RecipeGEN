@@ -88,6 +88,11 @@ ipython_config.py
 # Firebase stuff
 recipegen.json
 
+# Ignore files in upload dir but keep the dir itself
+!uploads/.gitkeep
+uploads/predictions/*
+!uploads/predictions/.gitkeep
+
 # pyenv
 #   For a library or package, you might want to ignore these files since the code is
 #   intended to run in multiple environments; otherwise, check them in:

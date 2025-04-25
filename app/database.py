@@ -313,33 +313,39 @@ def initialize_firestore():
 def get_recipes_with_ingredient(ingredient_name):
     try:
         db = initialize_firestore()
+        if not db:
+            logger.error("Failed to initialize Firestore, returning empty recipe list")
+            return []
         
-        #Query collection and documents
+        # Normalize the ingredient name to lowercase for better matching
+        normalized_ingredient = ingredient_name.lower()
+        
+        # Query the 'test' collection
         collection_ref = db.collection('test')
-        query = collection_ref.where('ingredients', 'array_contains', ingredient_name.lower())
         
+        # Try exact match with array_contains
+        query = collection_ref.where('ingredients', 'array_contains', normalized_ingredient)
+        
+        # Execute query
         docs = query.stream()
         
+        # Process the results
         recipes = []
         for doc in docs:
             recipe_data = doc.to_dict()
             recipe_data['id'] = doc.id
             
-            #Count ingredient occurances
+            # Count ingredient occurrences
             ingredient_count = 0
-            if 'ingredients' in recipe_data:
-                for ingredient in recipe_data['ingredients']:
-                    if ingredient_name.lower() in ingredient.lower():
-                        ingredient_count += 1
+            for ing in recipe_data.get('ingredients', []):
+                if normalized_ingredient in ing.lower():
+                    ingredient_count += 1
             
-
             recipe_data['ingredient_count'] = ingredient_count
-            
             recipes.append(recipe_data)
         
-        logger.info(f"Found {len(recipes)} recipes with {ingredient_name}")
+        logger.info(f"Found {len(recipes)} recipes with '{ingredient_name}'")
         return recipes
     except Exception as e:
         logger.error(f"Error querying Firestore: {str(e)}")
         return []
-
