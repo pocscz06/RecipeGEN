@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/yolo_v8.css') }}" />
+  </head>
+  <body>
+    <h1>{{ title }}</h1>
+    
+  <div class="result-card">
+      <div class="detection-result">
+        <h2>Object Detection <span class="model-indicator">YOLO Model</span></h2>
+        <div class="detection-count">Detected {{ result.detection_count }} object(s)</div>
+      </div>
+      
+      <div class="image-container">
+        <img src="{{ url_for('prediction_file', filename=pred_filename) }}" alt="Object detection result">
+      </div>
+      
+      {% if result.class_summary %}
+      <h2>Detected Objects</h2>
+      <div class="class-summary">
+        {% for class_item in result.class_summary %}
+          <div class="class-item">
+            <div class="class-name">{{ class_item.class_name }}</div>
+            <div class="class-count">{{ class_item.count }} (Confidence: {{ "%.2f"|format(class_item.max_confidence * 100) }}%)</div>
+          </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      
+      <div class="action-buttons">
+        {% if result.class_summary and result.class_summary|length > 0 %}
+          <a href="{{ url_for('find_recipes', ingredient=result.class_summary[0].class_name) }}" class="action-button recipe-button">
+            Find Recipes with {{ result.class_summary[0].class_name }}
+          </a>
+        {% endif %}
+        <a href="{{ url_for('upload_file') }}" class="action-button">
+          Upload Another Image
+        </a>
+      </div>
+    </div>
+  </body>
+</html>

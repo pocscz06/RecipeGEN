@@ -3,19 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../static/css/output.css" />
     <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}" />
   </head>
   <body>
-    <h1>Upload New File</h1>
+    <h1>RecipeGEN</h1>
+  
     <form method="POST" enctype="multipart/form-data">
       <label for="file">Choose a file to upload:</label>
       <input type="file" name="file" id="file" onchange="imagePreview(event)" />
-      <input type="submit" value="Upload" />
+      
+      <div class="prediction-buttons">
+        <input type="submit" formaction="{{ url_for('upload_file') }}" value="Predict w/ ResNet34" class="main-model" />
+        <input type="submit" formaction="{{ url_for('predict_direct_yolo') }}" value="Predict w/ Yolov8" class="yolo-model" />
+      </div>
     </form>
-    <div id="preview"></div>
-    <script src="{{ url_for('static', filename='index.js') }}"></script>
 
-    <form method="POST" enctype="multipart/form-data"></form>
+    <div id="preview"></div>
+    
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
   </body>
 </html>

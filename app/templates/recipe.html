@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/recipe.css') }}" />
+  </head>
+  <body>
+    <h1>{{ title }}</h1>
+    
+    <div class="summary-card">
+      <h2>Found <span class="ingredient-highlight">{{ recipe_count }}</span> recipes containing <span class="ingredient-highlight">{{ ingredient }}</span></h2>
+      <a href="{{ url_for('upload_file') }}" class="back-button">Upload Another Image</a>
+    </div>
+    
+    {% if recipes %}
+      <div class="recipes-grid">
+        {% for recipe in recipes %}
+          <div class="recipe-card">
+            <h3>{{ recipe.get('title', 'Untitled Recipe') }}</h3>
+            
+            <div class="recipe-ingredients">
+              <h4>Ingredients: <span class="ingredient-count">({{ recipe.ingredient_count }} occurrences of {{ ingredient }})</span></h4>
+              <ul>
+                {% for ingredient_item in recipe.ingredients %}
+                  <li>
+                    {% if ingredient.lower() in ingredient_item.lower() %}
+                      <span class="ingredient-highlight">{{ ingredient_item }}</span>
+                    {% else %}
+                      {{ ingredient_item }}
+                    {% endif %}
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+            
+            <div class="recipe-instructions">
+              <h4>Instructions:</h4>
+              <p>{{ recipe.instructions }}</p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="no-recipes">
+        <p>No recipes were found containing {{ ingredient }}. Try another ingredient.</p>
+      </div>
+    {% endif %}
+  </body>
+</html>
