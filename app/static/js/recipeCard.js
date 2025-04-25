@@ -6,114 +6,84 @@ function displayRecipes(recipesData) {
     return;
   }
 
-
   recipesGrid.innerHTML = "";
 
-  try {
-    const sortedRecipes = [...recipesData].sort(
-      (a, b) => (b.ingredient_count || 0) - (a.ingredient_count || 0)
-    );
+  const sortedRecipes = [...recipesData].sort(
+    (a, b) => (b.ingredient_count || 0) - (a.ingredient_count || 0)
+  );
 
-    console.log("Displaying recipes:", sortedRecipes);
+  console.log("Displaying recipes:", sortedRecipes);
 
-    sortedRecipes.forEach((recipe, index) => {
-      console.log(`Processing recipe ${index}:`, recipe);
-      
-      const card = document.createElement("div");
-      card.className = "recipe-card";
-      card.setAttribute("data-recipe-id", recipe.id || "");
+  sortedRecipes.forEach((recipe) => {
+    const card = document.createElement("div");
+    card.className = "recipe-card";
+    card.setAttribute("data-recipe-id", recipe.id || "");
 
-    
-      const title = document.createElement("h3");
-      title.textContent =
-        recipe.recipe_name || recipe.title || recipe.name || "Untitled Recipe";
-      card.appendChild(title);
+    const title = document.createElement("h3");
 
-      if (recipe.ingredients && recipe.ingredients.length > 0) {
-        const ingredients = document.createElement("div");
-        ingredients.className = "recipe-ingredients-preview";
+    title.textContent =
+      recipe.recipe_name || recipe.title || recipe.name || "Untitled Recipe";
+    card.appendChild(title);
 
-        const topIngredients = recipe.ingredients.slice(0, 3);
-        ingredients.textContent = topIngredients.join(", ");
+    if (recipe.ingredients && recipe.ingredients.length > 0) {
+      const ingredients = document.createElement("div");
+      ingredients.className = "recipe-ingredients-preview";
 
-        card.appendChild(ingredients);
-      }
+      const topIngredients = recipe.ingredients.slice(0, 3);
+      ingredients.textContent = topIngredients.join(", ");
 
-      
-      const imageUrl = recipe.image_url || recipe.url || recipe.imageUrl;
-      console.log(`Recipe ${index} image URL:`, imageUrl);
-      
-      if (imageUrl) {
-        const img = document.createElement("img");
-        img.src = imageUrl;
-        img.alt = recipe.recipe_name || recipe.name || "Recipe Image";
-        img.onerror = function () {
-          console.error(`Failed to load image for recipe ${index}:`, imageUrl);
-          this.remove();
-        };
-        img.onload = function() {
-          console.log(`Successfully loaded image for recipe ${index}:`, imageUrl);
-        };
-        card.appendChild(img);
-      }
+      card.appendChild(ingredients);
+    }
 
-    
-      recipesGrid.appendChild(card);
-    });
+    if (recipe.image_url) {
+      const img = document.createElement("img");
+      img.src = recipe.image_url;
+      img.alt = recipe.recipe_name || "Recipe Image";
+      img.onerror = function () {
+        this.remove();
+      };
+      card.appendChild(img);
+    }
 
-    console.log(`Displayed ${sortedRecipes.length} recipe cards`);
-  } catch (error) {
-    console.error("Error displaying recipes:", error);
-    recipesGrid.innerHTML = "<div class='no-recipes'><p>Error displaying recipes. Please try again.</p></div>";
-  }
+    recipesGrid.appendChild(card);
+  });
+
+  console.log(`Displayed ${sortedRecipes.length} recipe cards`);
 }
 
-
 function initRecipeDisplay() {
-  console.log("initRecipeDisplay called");
-  
- 
   const recipeDataElement = document.getElementById("recipe-data");
-  console.log("Recipe data element:", recipeDataElement);
-  
   let recipeData = [];
   let searchedIngredient = "";
 
   if (recipeDataElement) {
-    const dataAttr = recipeDataElement.getAttribute("data-recipes") || "[]";
-    console.log("Raw data-recipes attribute:", dataAttr);
-      
-    recipeData = JSON.parse(dataAttr);
-    console.log("Parsed recipe data:", recipeData);
-      
-    searchedIngredient =
-      recipeDataElement.getAttribute("data-ingredient") || "";
-    console.log(
-      `Found data for ${recipeData.length} recipes with ingredient: ${searchedIngredient}`
+    try {
+      recipeData = JSON.parse(
+        recipeDataElement.getAttribute("data-recipes") || "[]"
       );
-   
-  
-  } else {
-    console.error("Recipe data element not found!");
+      searchedIngredient =
+        recipeDataElement.getAttribute("data-ingredient") || "";
+      console.log(
+        `Found data for ${recipeData.length} recipes with ingredient: ${searchedIngredient}`
+      );
+    } catch (e) {
+      console.error("Error parsing recipe data:", e);
+    }
   }
 
   const loadingIndicator = document.querySelector(".loading-indicator");
-  console.log("Loading indicator:", loadingIndicator);
-  
   if (loadingIndicator) {
     loadingIndicator.remove();
-    console.log("Removed loading indicator");
   }
 
   if (recipeData && recipeData.length > 0) {
-    console.log("Calling displayRecipes with:", recipeData);
     displayRecipes(recipeData);
   } else {
     console.warn("No recipe data found");
 
     const recipesGrid = document.getElementById("recipes-grid");
     if (recipesGrid) {
-      recipesGrid.innerHTML = "<div class='no-recipes'><p>No recipes were found containing the ingredient. Try another ingredient.</p></div>";
+      recipesGrid.innerHTML = "";
     }
   }
 }
