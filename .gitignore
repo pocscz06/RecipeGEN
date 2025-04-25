@@ -16,6 +16,8 @@ downloads/
 eggs/
 .eggs/
 lib/
+Train/
+val/
 lib64/
 parts/
 sdist/
@@ -82,6 +84,9 @@ target/
 # IPython
 profile_default/
 ipython_config.py
+
+# Firebase stuff
+recipegen.json
 
 # pyenv
 #   For a library or package, you might want to ignore these files since the code is
