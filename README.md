@@ -72,6 +72,9 @@ pip install -r requirements.txt
 
 <!-- RUNNING THE WEB APPLICATION -->
 
+> [!NOTE]
+> Certain functionality will not work unles you generate a service key from our Firebase Console and export it into our app/ folder. Also, you need to create a .env file in our project's root directory and define the SECRET_KEY variable with any string value.
+
 Often, you'll want to test your changes before pushing to the repository. You can do so locally by running the command:
 
 ```sh
